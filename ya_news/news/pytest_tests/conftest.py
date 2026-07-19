@@ -87,6 +87,21 @@ LOGIN_URL = reverse("users:login")
 LOGOUT_URL = reverse("users:logout")
 SIGNUP_URL = reverse("users:signup")
 
+@pytest.fixture
+def home_url():
+    return HOME_URL
+
+@pytest.fixture
+def login_url():
+    return LOGIN_URL
+
+@pytest.fixture
+def signup_url():
+    return SIGNUP_URL
+
+@pytest.fixture
+def logout_url():
+    return LOGIN_URL
 
 @pytest.fixture
 def detail_url(news):
