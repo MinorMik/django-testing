@@ -1,21 +1,22 @@
 import pytest
 from django.conf import settings
 from news.forms import CommentForm
+from urls import HOME_URL
 
 pytestmark = pytest.mark.django_db
 
 
-def test_news_count(client, bulk_news, home_url):
+def test_news_count(client, bulk_news):
     """Количество новостей на главной странице строго ограничено."""
-    response = client.get(home_url)
+    response = client.get(HOME_URL)
     object_list = response.context["object_list"]
 
     assert object_list.count() == settings.NEWS_COUNT_ON_HOME_PAGE
 
 
-def test_news_order(client, bulk_news, home_url):
+def test_news_order(client, bulk_news):
     """Новости на главной странице отсортированы от свежих к старым."""
-    response = client.get(home_url)
+    response = client.get(HOME_URL)
     object_list = response.context["object_list"]
     all_dates = [news.date for news in object_list]
     sorted_dates = sorted(all_dates, reverse=True)

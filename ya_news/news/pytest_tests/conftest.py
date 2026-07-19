@@ -7,8 +7,6 @@ from django.urls import reverse
 from django.utils import timezone
 from news.models import Comment, News
 
-from .urls import HOME_URL, LOGIN_URL, LOGOUT_URL, SIGNUP_URL
-
 
 @pytest.fixture
 def author(django_user_model):
@@ -81,26 +79,6 @@ def bulk_comments(news, author):
         comment_obj.save(update_fields=["created"])
         comments.append(comment_obj)
     return comments
-
-
-@pytest.fixture
-def home_url():
-    return HOME_URL
-
-
-@pytest.fixture
-def login_url():
-    return LOGIN_URL
-
-
-@pytest.fixture
-def signup_url():
-    return SIGNUP_URL
-
-
-@pytest.fixture
-def logout_url():
-    return LOGOUT_URL
 
 
 @pytest.fixture

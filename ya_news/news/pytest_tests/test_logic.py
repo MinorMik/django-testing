@@ -4,18 +4,19 @@ import pytest
 from news.forms import BAD_WORDS, WARNING
 from news.models import Comment
 from pytest_django.asserts import assertFormError, assertRedirects
+from urls import LOGIN_URL
 
 pytestmark = pytest.mark.django_db
 
 COMMENT_FORM_DATA = {"text": "Новый текст комментария"}
 
 
-def test_anonymous_user_cant_create_comment(client, detail_url, login_url):
+def test_anonymous_user_cant_create_comment(client, detail_url):
     """Аноним не может создать комментарий."""
     comments_count_before = Comment.objects.count()
     response = client.post(detail_url, data=COMMENT_FORM_DATA)
 
-    expected_url = f"{login_url}?next={detail_url}"
+    expected_url = f"{LOGIN_URL}?next={detail_url}"
 
     assertRedirects(response, expected_url)
     assert Comment.objects.count() == comments_count_before

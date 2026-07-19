@@ -3,6 +3,7 @@ from http import HTTPStatus
 import pytest
 from pytest_django.asserts import assertRedirects
 from pytest_lazyfixture import lazy_fixture as lf
+from urls import LOGIN_URL
 
 pytestmark = pytest.mark.django_db
 
@@ -57,9 +58,9 @@ def test_pages_availability_via_post(
         lf("delete_url"),
     ),
 )
-def test_redirect_for_anonymous_client(client, url_fixture, login_url):
+def test_redirect_for_anonymous_client(client, url_fixture):
     """Проверка перенаправления анонимных пользователей."""
-    expected_redirect = f"{login_url}?next={url_fixture}"
+    expected_redirect = f"{LOGIN_URL}?next={url_fixture}"
     response = client.get(url_fixture)
 
     assertRedirects(response, expected_redirect)
