@@ -28,6 +28,7 @@ def test_pages_availability_via_get(
 ):
     """Объединенный тест статус-кодов GET-запросов для всех роутов."""
     response = parametrized_client.get(url_fixture)
+
     assert response.status_code == expected_status
 
 
@@ -45,6 +46,7 @@ def test_pages_availability_via_post(
     с точным ожиданием.
     """
     response = parametrized_client.post(url_fixture)
+
     assert response.status_code == expected_status
 
 
@@ -59,4 +61,5 @@ def test_redirect_for_anonymous_client(client, url_fixture, login_url):
     """Проверка перенаправления анонимных пользователей."""
     expected_redirect = f"{login_url}?next={url_fixture}"
     response = client.get(url_fixture)
+
     assertRedirects(response, expected_redirect)
