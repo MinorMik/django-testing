@@ -7,7 +7,8 @@ class TestRoutes(BaseTestCase):
 
     def test_public_pages_availability(self):
         """Проверка доступности публичных страниц
-        (GET) для анонимного клиента."""
+        (GET) для анонимного клиента.
+        """
         urls = (self.home_url, self.login_url, self.signup_url)
         for url in urls:
             with self.subTest(url=url):
@@ -22,7 +23,8 @@ class TestRoutes(BaseTestCase):
 
     def test_auth_pages_for_reader(self):
         """Страницы, доступные авторизованному читателю
-        (list, add, success)."""
+        (list, add, success).
+        """
         urls = (self.list_url, self.add_url, self.success_url)
         for url in urls:
             with self.subTest(url=url, client="reader"):
@@ -53,7 +55,8 @@ class TestRoutes(BaseTestCase):
 
     def test_redirect_for_anonymous(self):
         """Анонимному пользователю на защищённые страницы
-        — редирект на login?next=..."""
+        — редирект на login?next=...
+        """
         protected_urls = (
             self.list_url,
             self.add_url,
