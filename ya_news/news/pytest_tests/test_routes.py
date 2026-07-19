@@ -53,7 +53,7 @@ def test_protected_pages_by_client_type(request, url, client_fixture,
 def test_logout_via_post(client):
     """Отдельный тест на logout: он должен делать редирект (302)."""
     response = client.post(LOGOUT_URL)
-    assert response.status_code == FOUND
+    assert response.status_code == HTTPStatus.FOUND
 
 
 def test_author_can_edit_news(author_client, edit_url):
