@@ -18,11 +18,6 @@ FOUND = HTTPStatus.FOUND
         (HOME_URL, OK),
         (LOGIN_URL, OK),
         (SIGNUP_URL, OK),
-        (lf("detail_url"), lf("client"), OK),
-        (lf("edit_url"), lf("author_client"), OK),
-        (lf("edit_url"), lf("reader_client"), NOT_FOUND),
-        (lf("delete_url"), lf("author_client"), OK),
-        (lf("delete_url"), lf("reader_client"), NOT_FOUND),
     ],
 )
 def test_public_pages_availability(client, url, expected_status):
@@ -59,6 +54,26 @@ def test_logout_via_post(client):
     """Отдельный тест на logout: он должен делать редирект (302)."""
     response = client.post(LOGOUT_URL)
     assert response.status_code == FOUND
+
+
+def test_author_can_edit_news(author_client, edit_url):
+    response = author_client.get(edit_url)
+    assert response.status_code == OK
+
+
+def test_reader_cannot_edit_news(reader_client, edit_url):
+    response = reader_client.get(edit_url)
+    assert response.status_code == NOT_FOUND
+
+
+def test_author_can_delete_news(author_client, delete_url):
+    response = author_client.get(delete_url)
+    assert response.status_code == OK
+
+
+def test_reader_cannot_delete_news(reader_client, delete_url):
+    response = reader_client.get(delete_url)
+    assert response.status_code == NOT_FOUND
 
 
 @pytest.mark.parametrize(
