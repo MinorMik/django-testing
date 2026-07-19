@@ -65,7 +65,8 @@ def test_logout_via_post(client):
     "url_fixture_name",
     ["edit_url", "delete_url"],
 )
-def test_redirect_for_anonymous_client(client, request, url_fixture_name, news):
+def test_redirect_for_anonymous_client(client, request, url_fixture_name,
+                                       news):
     """Проверка перенаправления анонимных пользователей на login."""
     url = request.getfixturevalue(url_fixture_name)
     expected_redirect = f"{LOGIN_URL}?next={url}"
