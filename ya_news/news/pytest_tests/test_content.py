@@ -1,7 +1,7 @@
 import pytest
 from django.conf import settings
 from news.forms import CommentForm
-from urls import HOME_URL
+from .urls import HOME_URL
 
 pytestmark = pytest.mark.django_db
 

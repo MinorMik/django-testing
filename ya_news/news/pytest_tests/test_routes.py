@@ -3,7 +3,7 @@ from http import HTTPStatus
 import pytest
 from pytest_django.asserts import assertRedirects
 from pytest_lazyfixture import lazy_fixture as lf
-from urls import LOGIN_URL
+from .urls import LOGIN_URL
 
 pytestmark = pytest.mark.django_db
 
