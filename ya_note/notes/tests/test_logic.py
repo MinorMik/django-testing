@@ -1,10 +1,9 @@
 from http import HTTPStatus
 
-from pytils.translit import slugify
-
 from notes.forms import WARNING
 from notes.models import Note
 from notes.tests.base import BaseTestCase
+from pytils.translit import slugify
 
 
 class TestLogic(BaseTestCase):
@@ -29,12 +28,10 @@ class TestLogic(BaseTestCase):
         self.assertEqual(note.author, self.author)
 
     def test_not_unique_slug(self):
-        # Используем слаг уже существующей в BaseTestCase заметки
         self.form_data["slug"] = self.note.slug
         notes_count_before = Note.objects.count()
         response = self.author_client.post(self.add_url, data=self.form_data)
 
-        # Сначала проверяем количество, затем — форму
         self.assertEqual(Note.objects.count(), notes_count_before)
         form = response.context["form"]
         self.assertFormError(form, "slug", self.note.slug + WARNING)
@@ -84,7 +81,6 @@ class TestNoteEditDelete(BaseTestCase):
         response = self.reader_client.post(self.edit_url, data=self.form_data)
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
-        # Проверяем, что все поля остались прежними
         db_note = Note.objects.get(id=self.note.id)
         self.assertEqual(db_note.title, self.note.title)
         self.assertEqual(db_note.text, self.note.text)

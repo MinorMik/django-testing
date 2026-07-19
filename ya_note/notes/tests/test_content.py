@@ -38,7 +38,6 @@ class TestRoutes(BaseTestCase):
           - читатель: NOT_FOUND
         """
         test_cases = [
-            # (client, expected_status)
             (self.author_client, HTTPStatus.OK),
             (self.reader_client, HTTPStatus.NOT_FOUND),
         ]

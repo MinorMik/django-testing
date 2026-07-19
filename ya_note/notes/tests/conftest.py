@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.test import TestCase, Client
+from django.test import Client, TestCase
 from django.utils import timezone
 from notes.models import Note
 
@@ -8,7 +8,6 @@ User = get_user_model()
 
 class NotesTests(TestCase):
     def setUp(self):
-        # Аналог фикстур: подготовка данных перед каждым тестом
         self.author = User.objects.create_user(
             username='Автор', password='testpass'
         )

@@ -1,10 +1,9 @@
 from http import HTTPStatus
 
-from pytest_django.asserts import assertFormError, assertRedirects
 import pytest
-
 from news.forms import BAD_WORDS, WARNING
 from news.models import Comment
+from pytest_django.asserts import assertFormError, assertRedirects
 
 pytestmark = pytest.mark.django_db
 
@@ -17,6 +16,7 @@ def test_anonymous_user_cant_create_comment(client, detail_url, login_url):
     response = client.post(detail_url, data=COMMENT_FORM_DATA)
 
     expected_url = f"{login_url}?next={detail_url}"
+
     assertRedirects(response, expected_url)
     assert Comment.objects.count() == comments_count_before
 
@@ -28,10 +28,11 @@ def test_user_can_create_comment(author_client, author, news, detail_url):
     response = author_client.post(detail_url, data=COMMENT_FORM_DATA)
 
     expected_url = f"{detail_url}#comments"
-    assertRedirects(response, expected_url)
 
-    assert Comment.objects.count() == 1
     comment = Comment.objects.get()
+
+    assertRedirects(response, expected_url)
+    assert Comment.objects.count() == 1
     assert comment.text == COMMENT_FORM_DATA["text"]
     assert comment.news == news
     assert comment.author == author
@@ -44,8 +45,9 @@ def test_user_cant_use_bad_words(author_client, detail_url):
 
     response = author_client.post(detail_url, data=bad_words_data)
 
-    assert Comment.objects.count() == comments_count_before
     form = response.context['form']
+
+    assert Comment.objects.count() == comments_count_before
     assertFormError(form, "text", WARNING)
 
 
@@ -82,9 +84,9 @@ def test_author_can_edit_comment(
 
     response = author_client.post(edit_url, data=COMMENT_FORM_DATA)
 
-    assertRedirects(response, expected_url)
-
     updated_comment = Comment.objects.get(id=comment.id)
+
+    assertRedirects(response, expected_url)
     assert updated_comment.text == COMMENT_FORM_DATA["text"]
     assert updated_comment.news == comment.news
     assert updated_comment.author == comment.author
@@ -96,9 +98,9 @@ def test_user_cant_edit_comment_of_another_user(
     """Другой пользователь получает 404, поля сущности остаются прежними."""
     response = reader_client.post(edit_url, data=COMMENT_FORM_DATA)
 
-    assert response.status_code == HTTPStatus.NOT_FOUND
-
     updated_comment = Comment.objects.get(id=comment.id)
+
+    assert response.status_code == HTTPStatus.NOT_FOUND
     assert updated_comment.text == comment.text
     assert updated_comment.news == comment.news
     assert updated_comment.author == comment.author

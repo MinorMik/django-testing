@@ -1,11 +1,13 @@
 from datetime import timedelta
+
+import pytest
 from django.conf import settings
 from django.test.client import Client
 from django.urls import reverse
 from django.utils import timezone
-import pytest
-
 from news.models import Comment, News
+
+from .urls import HOME_URL, LOGIN_URL, LOGOUT_URL, SIGNUP_URL
 
 
 @pytest.fixture
@@ -34,7 +36,6 @@ def reader_client(reader):
     return client
 
 
-# Группа 2: Объекты БД
 @pytest.fixture
 def news(db):
     return News.objects.create(
@@ -81,13 +82,6 @@ def bulk_comments(news, author):
         comments.append(comment_obj)
     return comments
 
-
-HOME_URL = reverse("news:home")
-LOGIN_URL = reverse("users:login")
-LOGOUT_URL = reverse("users:logout")
-SIGNUP_URL = reverse("users:signup")
-
-
 @pytest.fixture
 def home_url():
     return HOME_URL
@@ -105,7 +99,7 @@ def signup_url():
 
 @pytest.fixture
 def logout_url():
-    return LOGIN_URL
+    return LOGOUT_URL
 
 
 @pytest.fixture
