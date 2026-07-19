@@ -2,7 +2,8 @@ from http import HTTPStatus
 
 import pytest
 from pytest_django.asserts import assertRedirects
-from .urls import HOME_URL, LOGIN_URL, SIGNUP_URL, LOGOUT_URL
+
+from .urls import HOME_URL, LOGIN_URL, LOGOUT_URL, SIGNUP_URL
 
 pytestmark = pytest.mark.django_db
 
