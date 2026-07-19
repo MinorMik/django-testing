@@ -6,7 +6,8 @@ from notes.tests.base import BaseTestCase
 class TestRoutes(BaseTestCase):
 
     def test_public_pages_availability(self):
-        """Проверка доступности публичных страниц (GET) для анонимного клиента."""
+        """Проверка доступности публичных страниц
+        (GET) для анонимного клиента."""
         urls = (self.home_url, self.login_url, self.signup_url)
         for url in urls:
             with self.subTest(url=url):
@@ -20,7 +21,8 @@ class TestRoutes(BaseTestCase):
             self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_auth_pages_for_reader(self):
-        """Страницы, доступные авторизованному читателю (list, add, success)."""
+        """Страницы, доступные авторизованному читателю
+        (list, add, success)."""
         urls = (self.list_url, self.add_url, self.success_url)
         for url in urls:
             with self.subTest(url=url, client="reader"):
@@ -42,14 +44,16 @@ class TestRoutes(BaseTestCase):
 
         for client, expected_status in test_cases:
             for url in urls:
-                with self.subTest(client="author" if client is self.author_client else "reader",
+                with self.subTest(client="author" if client is
+                                  self.author_client else "reader",
                                   url=url,
                                   expected_status=expected_status.value):
                     response = client.get(url)
                     self.assertEqual(response.status_code, expected_status)
 
     def test_redirect_for_anonymous(self):
-        """Анонимному пользователю на защищённые страницы — редирект на login?next=..."""
+        """Анонимному пользователю на защищённые страницы
+        — редирект на login?next=..."""
         protected_urls = (
             self.list_url,
             self.add_url,
