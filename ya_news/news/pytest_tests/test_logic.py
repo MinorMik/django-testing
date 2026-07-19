@@ -23,8 +23,6 @@ def test_anonymous_user_cant_create_comment(client, detail_url, login_url):
 
 def test_user_can_create_comment(author_client, author, news, detail_url):
     """Авторизованный пользователь успешно создает комментарий."""
-    # Очищаем таблицу перед тестом для гарантии
-    # независимости от Meta-сортировки
     Comment.objects.all().delete()
 
     response = author_client.post(detail_url, data=COMMENT_FORM_DATA)
@@ -56,7 +54,7 @@ def test_author_can_delete_comment(
 ):
     """Автор может успешно удалить свой собственный комментарий."""
     comments_count_before = Comment.objects.count()
-    expected_url = detail_url + "#comments"
+    expected_url = f'{detail_url}#comments'
 
     response = author_client.delete(delete_url)
 
@@ -80,7 +78,7 @@ def test_author_can_edit_comment(
     author_client, comment, news, detail_url, edit_url
 ):
     """Извлекаем объект через get(), сверяем неизменность автора и новости."""
-    expected_url = detail_url + "#comments"
+    expected_url = f'{detail_url}#comments'
 
     response = author_client.post(edit_url, data=COMMENT_FORM_DATA)
 

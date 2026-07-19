@@ -74,7 +74,6 @@ class TestNoteEditDelete(BaseTestCase):
         response = self.author_client.post(self.edit_url, data=self.form_data)
         self.assertRedirects(response, self.success_url)
 
-        # Забираем объект из БД заново по ID (вместо refresh_from_db)
         updated_note = Note.objects.get(id=self.note.id)
         self.assertEqual(updated_note.title, self.form_data["title"])
         self.assertEqual(updated_note.text, self.form_data["text"])

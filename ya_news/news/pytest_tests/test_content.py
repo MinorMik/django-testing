@@ -8,28 +8,37 @@ pytestmark = pytest.mark.django_db
 
 def test_news_count(client, bulk_news, home_url):
     """Количество новостей на главной странице строго ограничено."""
+    # Arrange: данные уже подготовлены фикстурами (bulk_news, home_url)
+    # Act
     response = client.get(home_url)
     object_list = response.context["object_list"]
+    # Assert
     assert object_list.count() == settings.NEWS_COUNT_ON_HOME_PAGE
 
 
 def test_news_order(client, bulk_news, home_url):
     """Новости на главной странице отсортированы от свежих к старым."""
+    # Arrange: фикстуры подготовили новости и URL
+    # Act
     response = client.get(home_url)
     object_list = response.context["object_list"]
     all_dates = [news.date for news in object_list]
     sorted_dates = sorted(all_dates, reverse=True)
+    # Assert
     assert all_dates == sorted_dates
 
 
 def test_comments_order(client, news, bulk_comments, detail_url):
     """Комментарии на странице детализации отсортированы по хронологии."""
+    # Arrange: фикстуры подготовили новость, комментарии и URL
+    # Act
     response = client.get(detail_url)
-    assert "news" in response.context
+
     news_obj = response.context["news"]
     all_comments = news_obj.comment_set.all()
     all_timestamps = [comment.created for comment in all_comments]
     sorted_timestamps = sorted(all_timestamps)
+    # Assert
     assert all_timestamps == sorted_timestamps
 
 
@@ -42,12 +51,18 @@ def test_comments_order(client, news, bulk_comments, detail_url):
 )
 def test_pages_contain_form(author_client, url_fixture):
     """Наличие CommentForm на страницах деталей и редактирования."""
+    # Arrange: автор-клиент и URL подготовлены фикстурами
+    # Act
     response = author_client.get(url_fixture)
+    # Assert
     assert "form" in response.context
     assert isinstance(response.context["form"], CommentForm)
 
 
 def test_anonymous_client_has_no_form(client, detail_url):
     """У неавторизованного пользователя нет формы отправки комментария."""
+    # Arrange: обычный клиент и URL подготовлены фикстурами
+    # Act
     response = client.get(detail_url)
+    # Assert
     assert "form" not in response.context
