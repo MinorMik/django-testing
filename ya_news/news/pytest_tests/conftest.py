@@ -82,6 +82,7 @@ def bulk_comments(news, author):
         comments.append(comment_obj)
     return comments
 
+
 @pytest.fixture
 def home_url():
     return HOME_URL
